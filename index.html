@@ -54,6 +54,7 @@
             console.log("index : Failed to load Interstitial Ad: " + error);
           },
         });
+
         setTimeout(function () {
           window.JioGames?.cacheAd(AdType.Rewarded, {
             onAdPrepared: function () {
