@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      async
+      src="https://jiogames.akamaized.net/gameSDK/jiogames/stable/v2.0/jiogames_sdk.js"
+      data-jg-test-environment="on"
+    ></script>
+    <title>3 Button App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        height: 100%;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      button {
+        padding: 15px 30px;
+        font-size: 16px;
+        border: none;
+        background-color: black;
+        color: white;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button onclick="cacheAd()">Cache Ad</button>
+      <button onclick="showAdi()">Show Midroll</button>
+      <button onclick="showAdr()">Show Rewarded Video</button>
+    </div>
+    <script>
+      function cacheAd() {
+        window.JioGames?.cacheAd(AdType.Interstitial, {
+          onAdPrepared: function () {
+            console.log("index : Interstitial Ad prepared successfully.");
+          },
+          onAdFailedToLoad: function (error) {
+            console.log("index : Failed to load Interstitial Ad: " + error);
+          },
+        });
+        setTimeout(function () {
+          window.JioGames?.cacheAd(AdType.Rewarded, {
+            onAdPrepared: function () {
+              console.log("index : Rewarded Ad prepared successfully.");
+            },
+            onAdFailedToLoad: function (error) {
+              console.log("index : Failed to load Rewarded Ad: " + error);
+            },
+          });
+        }, 5000);
+      }
+      function showAdi() {
+        window.JioGames?.postScore(0);
+
+        window.JioGames?.showAd(AdType.Interstitial, {
+          onAdClosed: function () {
+            console.log("index : Interstitial Ad closed.");
+          },
+          onAdFailedToLoad: function (error) {
+            console.log("index : Failed to load Interstitial Ad: " + error);
+          },
+        });
+      }
+      function showAdr() {
+        window.JioGames?.showAd(AdType.Rewarded, {
+          onAdClosed: function (isRewardUser) {
+            console.log("index : Rewarded Ad closed.");
+            if (isRewardUser) {
+              console.log("index: Give here the reward to the user.");
+            }
+          },
+          onAdFailedToLoad: function (error) {
+            console.log("index : Failed to load Rewarded Ad: " + error);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
